@@ -1,0 +1,37 @@
+[
+  {
+    "file": "./database/mockData/users.csv",
+    "table": "users",
+    "hasHeader": false
+  },
+  {
+    "file": "./database/mockData/stories.csv",
+    "table": "stories",
+    "hasHeader": false
+  },
+  {
+    "file": "./database/mockData/published_stories.csv",
+    "table": "published_stories",
+    "hasHeader": false
+  },
+  {
+    "file": "./database/mockData/claps.csv",
+    "table": "claps",
+    "hasHeader": false
+  },
+  {
+    "file": "./database/mockData/responses.csv",
+    "table": "responses",
+    "hasHeader": false
+  },
+  {
+    "file": "./database/mockData/tags.csv",
+    "table": "tags",
+    "hasHeader": false
+  },
+  {
+    "file": "./database/mockData/followers.csv",
+    "table": "followers",
+    "hasHeader": false
+  }
+]

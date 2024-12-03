@@ -1,0 +1,1888 @@
+openapi: 3.0.1
+info:
+  version: 1.0.0
+  title: Medium Backend APIs
+  description: All the APIs required to build medium
+  contact:
+    name: Mentors
+servers:
+  - url: 'http://localhost:8000'
+    description: Medium backend server
+tags:
+  - name: Common APIs
+    description: General purpose APIs
+  - name: Draft APIs
+    description: APIs used to handle drafts
+  - name: Story APIs
+    description: APIs used to handle stories
+  - name: User APIs
+    description: APIs used to handle user interactions
+paths:
+  /isLoggedIn:
+    get:
+      tags:
+        - Common APIs
+      description: check if user is logged in or nor
+      responses:
+        200:
+          description: logged in or not
+          content:
+            application/json:
+              schema:
+                description: logged in status
+                type: object
+                required:
+                  - loggedIn
+                properties:
+                  loggedIn:
+                    description: boolean informing whether user is logged in or not
+                    type: boolean
+                    example: false
+
+  /coverImage/{coverImageName}:
+    get:
+      tags:
+        - Common APIs
+      description: Returns cover image
+      parameters:
+        - name: coverImageName
+          in: path
+          type: string
+          example: cover-image.png
+          required: true
+      responses:
+        '200':
+          description: Successful image
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Image not found
+
+  /search:
+    get:
+      security:
+        - authentication: []
+      tags:
+        - Common APIs
+      description: used to search a keyword across all stories, drafts, tags, authors and returns matched ones
+      parameters:
+        - name: keyword
+          in: query
+          type: string
+          required: true
+      responses:
+        200:
+          description: Get matching stories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/searchResults'
+              examples:
+                'tag based':
+                  description: stories matching with the tags
+                  value:
+                    authorBased: []
+                    tagBased:
+                      - id: 1
+                        title: 9 Ways to Build Virality into your Product
+                        content:
+                          - type: paragraph
+                            data:
+                              text: >-
+                                I am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: delimiter
+                            data: {}
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                        published_at: '2020-07-22 20:13:19'
+                        author: abhilashkasula
+                        author_id: 58025056
+                        tags:
+                          - technology
+                          - maths
+                          - science
+                          - thriller
+                          - sci-fi
+                    contentBased: []
+                'content based':
+                  description: stories matching with the content/title
+                  value:
+                    authorBased: []
+                    tagBased: []
+                    contentBased:
+                      - id: 1
+                        title: 9 Ways to Build Virality into your Product
+                        content:
+                          - type: paragraph
+                            data:
+                              text: >-
+                                I am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: delimiter
+                            data: {}
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                        published_at: '2020-07-22 20:13:19'
+                        author: abhilashkasula
+                        author_id: 58025056
+                        tags:
+                          - technology
+                          - maths
+                          - science
+                          - thriller
+                          - sci-fi
+                      - id: 3
+                        title: 9 Ways to Build Virality into your Product
+                        content:
+                          - type: paragraph
+                            data:
+                              text: >-
+                                I am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: delimiter
+                            data: {}
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                        published_at: '2020-07-22 20:13:19'
+                        author: anil-muraleedharan
+                        author_id: 56071561
+                        tags:
+                          - comic
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Invalid keyword':
+                  description: The provided keyword is invalid
+                  value:
+                    error: invalid keyword
+                'Required query params not present':
+                  description: Required query params not present
+                  value:
+                    error: Required query params not present
+                    missingFields:
+                      - keyword
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /draft/{draftId}:
+    get:
+      security:
+        - authentication: []
+      tags:
+        - Draft APIs
+      description: Get the draft using draftId
+      parameters:
+        - name: draftId
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: Requested draft
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/story'
+              examples:
+                'draft':
+                  description: draft
+                  value:
+                    id: 1
+                    title: 9 Ways to Build Virality into your Product
+                    content:
+                      - type: paragraph
+                        data:
+                          text: >-
+                            I am a computer science student with a passion for design and all things
+                            aesthetic. I am also a minimalist and love keeping things extremely
+                            simple. I thought it would be nice to document my current computer setup
+                            and share how I organize my digital workspace.
+                      - type: paragraph
+                        data:
+                          text: >-
+                            am a computer science student with a passion for design and all things
+                            aesthetic. I am also a minimalist and love keeping things extremely
+                            simple. I thought it would be nice to document my current computer setup
+                            and share how I organize my digital workspace.
+                      - type: header
+                        data:
+                          text: Workspace
+                          level: 2
+                      - type: paragraph
+                        data:
+                          text: >-
+                            am a computer science student with a passion for design and all things
+                            aesthetic. I am also a minimalist and love keeping things extremely
+                            simple. I thought it would be nice to document my current computer setup
+                            and share how I organize my digital workspace.
+                      - type: delimiter
+                        data: {}
+                      - type: header
+                        data:
+                          text: Workspace
+                          level: 2
+                      - type: paragraph
+                        data:
+                          text: >-
+                            am a computer science student with a passion for design and all things
+                            aesthetic. I am also a minimalist and love keeping things extremely
+                            simple. I thought it would be nice to document my current computer setup
+                            and share how I organize my digital workspace.
+                    published_at: null
+                    author: abhilashkasula
+                    author_id: 58025056
+                    tags: []
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No draft found':
+                  description: These is no draft found with given id
+                  value:
+                    error: No draft found
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Required path params not present':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - draftId
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /draft:
+    delete:
+      security:
+        - authentication: []
+      tags:
+        - Draft APIs
+      description: Delete draft by draftId
+      requestBody:
+        description: unique id of the draft which you want to delete
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - draftId
+              properties:
+                draftId:
+                  description: unique id of the draft which you want to delete
+              example:
+                draftId: 1
+      responses:
+        200:
+          description: status of the request
+          content:
+            application/json:
+              examples:
+                'successfully deleted':
+                  description: successfully deleted
+                  value:
+                    status: deleted
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No draft found':
+                  description: These is no draft found with given id
+                  value:
+                    error: No draft found
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Required path fields not present':
+                  description: Required fields not present in the request body
+                  value:
+                    error: Required fields not present in the request body
+                    missingFields:
+                      - draftId
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /user/dashboard:
+    get:
+      security:
+        - authentication: []
+      tags:
+        - User APIs
+      description: Get user dashboard
+      responses:
+        200:
+          description: Dashboard stories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stories'
+              examples:
+                'dashboard':
+                  description: dashboard stories
+                  value:
+                    - id: 1
+                      title: 9 Ways to Build Virality into your Product
+                      content:
+                        - type: paragraph
+                          data:
+                            text: >-
+                              I am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                        - type: paragraph
+                          data:
+                            text: >-
+                              am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                        - type: header
+                          data:
+                            text: Workspace
+                            level: 2
+                        - type: paragraph
+                          data:
+                            text: >-
+                              am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                        - type: delimiter
+                          data: {}
+                        - type: header
+                          data:
+                            text: Workspace
+                            level: 2
+                        - type: paragraph
+                          data:
+                            text: >-
+                              am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                      published_at: '2020-07-22 20:13:19'
+                      author: abhilashkasula
+                      author_id: 58025056
+                      author_avatar_url: https://avatars0.githubusercontent.com/u/58025056?v=4
+                      tags:
+                        - technology
+                        - maths
+                        - science
+                        - thriller
+                        - sci-fi
+                    - id: 3
+                      title: 9 Ways to Build Virality into your Product
+                      content:
+                        - type: paragraph
+                          data:
+                            text: >-
+                              I am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                        - type: paragraph
+                          data:
+                            text: >-
+                              am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                        - type: header
+                          data:
+                            text: Workspace
+                            level: 2
+                        - type: paragraph
+                          data:
+                            text: >-
+                              am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                        - type: delimiter
+                          data: {}
+                        - type: header
+                          data:
+                            text: Workspace
+                            level: 2
+                        - type: paragraph
+                          data:
+                            text: >-
+                              am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                      published_at: '2020-07-22 20:13:19'
+                      author: anil-muraleedharan
+                      author_id: 56071561
+                      author_avatar_url: https://avatars0.githubusercontent.com/u/56071561?v=4
+                      tags:
+                        - comic
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /user/stories:
+    get:
+      security:
+        - authentication: []
+      tags:
+        - User APIs
+      description: Get user stories both drafts & published
+      responses:
+        200:
+          description: User stories
+          content:
+            application/json:
+              schema:
+                description: user stories
+                type: object
+                required:
+                  - drafts
+                  - published
+                properties:
+                  drafts:
+                    description: drafts of the user
+                    $ref: '#/components/schemas/stories'
+                  published:
+                    description: stories published by the user
+                    $ref: '#/components/schemas/stories'
+              examples:
+                'user stories':
+                  description: user stories
+                  value:
+                    drafts:
+                      - id: 3
+                        title: 9 Ways to Build Virality into your Product
+                        content:
+                          - type: paragraph
+                            data:
+                              text: >-
+                                I am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: delimiter
+                            data: {}
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                        published_at: null
+                        author: abhilashkasula
+                        author_id: 58025056
+                        tags: []
+                    published:
+                      - id: 1
+                        title: 9 Ways to Build Virality into your Product
+                        content:
+                          - type: paragraph
+                            data:
+                              text: >-
+                                I am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: delimiter
+                            data: {}
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                        published_at: '2020-07-22 20:13:19'
+                        author: abhilashkasula
+                        author_id: 58025056
+                        tags:
+                          - technology
+                          - maths
+                          - science
+                          - thriller
+                          - sci-fi
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /user/profile/{userId}:
+    get:
+      security:
+        - authentication: []
+      tags:
+        - User APIs
+      description: Get user profile
+      parameters:
+        - name: userId
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userProfile'
+              examples:
+                'user profile':
+                  description: user profile
+                  value:
+                    id: 58025056
+                    username: abhilashkasula
+                    avatar_url: https://avatars0.githubusercontent.com/u/58025056?v=4
+                    followers:
+                      - id: 58025419
+                        username: myultimatevision
+                        avatar_url: https://avatars0.githubusercontent.com/u/58025419?v=4
+                      - id:
+                        username: anil-muraleedharan
+                        avatar_url: https://avatars2.githubusercontent.com/u/56071561?v=4
+                      - id: 58026249
+                        username: venkybavisetti
+                        avatar_url: https://avatars2.githubusercontent.com/u/58026249?v=4
+                    following:
+                      - id: 58025419
+                        username: myultimatevision
+                        avatar_url: https://avatars0.githubusercontent.com/u/58025419?v=4
+                    stories:
+                      - id: 1
+                        title: 9 Ways to Build Virality into your Product
+                        content:
+                          - type: paragraph
+                            data:
+                              text: >-
+                                I am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                          - type: delimiter
+                            data: {}
+                          - type: header
+                            data:
+                              text: Workspace
+                              level: 2
+                          - type: paragraph
+                            data:
+                              text: >-
+                                am a computer science student with a passion for design and all things
+                                aesthetic. I am also a minimalist and love keeping things extremely
+                                simple. I thought it would be nice to document my current computer setup
+                                and share how I organize my digital workspace.
+                        published_at: '2020-07-22 20:13:19'
+                        author: abhilashkasula
+                        author_id: 58025056
+                        tags:
+                          - technology
+                          - maths
+                          - science
+                          - thriller
+                          - sci-fi
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No user found':
+                  description: These is no user found with given id
+                  value:
+                    error: No user found
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Required path params not present':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - userId
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /user/follow:
+    post:
+      security:
+        - authentication: []
+      tags:
+        - User APIs
+      description: follow an authorId
+      requestBody:
+        description: unique id of the authorId to follow
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - authorId
+              properties:
+                authorId:
+                  description: unique id of the authorId to follow
+              example:
+                authorId: 56071561
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              examples:
+                'follow':
+                  description: success
+                  value:
+                    status: Following
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No draft found':
+                  description: These is no user found with given id
+                  value:
+                    error: No author found
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Following self':
+                  description: Following self
+                  value:
+                    error: You cannot follow yourself
+                'Already following':
+                  description: Already following
+                  value:
+                    error: Already following
+                'Required path params not present':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - authorId
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /user/unFollow:
+    post:
+      security:
+        - authentication: []
+      tags:
+        - User APIs
+      description: unfollow an authorId
+      requestBody:
+        description: unique id of the authorId to unfollow
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - authorId
+              properties:
+                authorId:
+                  description: unique id of the authorId to follow
+              example:
+                authorId: 56071561
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              examples:
+                'follow':
+                  description: success
+                  value:
+                    status: Unfollowed
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Not following':
+                  description: You are not a follower of this user
+                  value:
+                    error: You are not a follower of this user
+                'Required path params not present':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - authorId
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /user/logout:
+    post:
+      security:
+        - authentication: []
+      tags:
+        - User APIs
+      description: logout
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              examples:
+                'logout':
+                  description: logout
+                  value:
+                    status: 'Logged out'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /story/{storyId}/responses:
+    get:
+      tags:
+        - Story APIs
+      description: Get responses of a story
+      parameters:
+        - name: storyId
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: story responses
+          content:
+            application/json:
+              schema:
+                description: story & responses
+                type: object
+                required:
+                  - story
+                  - responses
+                properties:
+                  story:
+                    description: story for which responses are requested
+                    $ref: '#/components/schemas/publishedStory'
+                  responses:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/response'
+              examples:
+                'story responses':
+                  description: story responses
+                  value:
+                    story:
+                      id: 1
+                      title: 9 Ways to Build Virality into your Product
+                      author: naveen-kumar-vadla
+                      avatar_url: 'https://avatars3.githubusercontent.com/u/58026402?v=4'
+                      authorId: 58026402
+                      content:
+                        - type: paragraph
+                          data:
+                            text: >-
+                              I am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                        - type: paragraph
+                          data:
+                            text: >-
+                              am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                        - type: header
+                          data:
+                            text: Workspace
+                            level: 2
+                        - type: paragraph
+                          data:
+                            text: >-
+                              am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                        - type: delimiter
+                          data: {}
+                        - type: header
+                          data:
+                            text: Workspace
+                            level: 2
+                        - type: paragraph
+                          data:
+                            text: >-
+                              am a computer science student with a passion for design and all things
+                              aesthetic. I am also a minimalist and love keeping things extremely
+                              simple. I thought it would be nice to document my current computer setup
+                              and share how I organize my digital workspace.
+                      published_at: '2020-07-22 20:13:19'
+                      views: 2
+                      cover_image_name: cover-image.png
+                      is_following: 0
+                      responsesCount: 4
+                      clapsCount: 3
+                      isClapped: 0
+                      tags:
+                        - technology
+                        - maths
+                        - science
+                        - thriller
+                        - sci-fi
+                      isAuthor: true
+                    responses:
+                      - id: 58025056
+                        response: Thanks Naagu
+                        responded_at: '2020-07-22 20:13:19'
+                        username: abhilashkasula
+                        avatar_url: 'https://avatars0.githubusercontent.com/u/58025056?v=4'
+                      - id: 58025419
+                        response: Nice story
+                        responded_at: '2020-07-22 20:13:19'
+                        username: myultimatevision
+                        avatar_url: 'https://avatars0.githubusercontent.com/u/58025419?v=4'
+                      - id: 58028408
+                        response: Our app
+                        responded_at: '2020-07-22 20:13:19'
+                        username: photongupta
+                        avatar_url: 'https://avatars0.githubusercontent.com/u/58028408?v=4'
+                      - id: 58026249
+                        response: Nice story
+                        responded_at: '2020-07-22 20:13:19'
+                        username: venkybavisetti
+                        avatar_url: 'https://avatars2.githubusercontent.com/u/58026249?v=4'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No story found':
+                  description: These is no story found with given id
+                  value:
+                    error: No story found
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Required path params not present':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - storyId
+
+  /story/{storyId}:
+    get:
+      tags:
+        - Story APIs
+      description: Get story
+      parameters:
+        - name: storyId
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: story
+          content:
+            application/json:
+              schema:
+                description: story
+                $ref: '#/components/schemas/publishedStory'
+              examples:
+                'story':
+                  description: story
+                  value:
+                    id: 1
+                    title: 9 Ways to Build Virality into your Product
+                    author: naveen-kumar-vadla
+                    avatar_url: 'https://avatars3.githubusercontent.com/u/58026402?v=4'
+                    authorId: 58026402
+                    content:
+                      - type: paragraph
+                        data:
+                          text: >-
+                            I am a computer science student with a passion for design and all things
+                            aesthetic. I am also a minimalist and love keeping things extremely
+                            simple. I thought it would be nice to document my current computer setup
+                            and share how I organize my digital workspace.
+                      - type: paragraph
+                        data:
+                          text: >-
+                            am a computer science student with a passion for design and all things
+                            aesthetic. I am also a minimalist and love keeping things extremely
+                            simple. I thought it would be nice to document my current computer setup
+                            and share how I organize my digital workspace.
+                      - type: header
+                        data:
+                          text: Workspace
+                          level: 2
+                      - type: paragraph
+                        data:
+                          text: >-
+                            am a computer science student with a passion for design and all things
+                            aesthetic. I am also a minimalist and love keeping things extremely
+                            simple. I thought it would be nice to document my current computer setup
+                            and share how I organize my digital workspace.
+                      - type: delimiter
+                        data: {}
+                      - type: header
+                        data:
+                          text: Workspace
+                          level: 2
+                      - type: paragraph
+                        data:
+                          text: >-
+                            am a computer science student with a passion for design and all things
+                            aesthetic. I am also a minimalist and love keeping things extremely
+                            simple. I thought it would be nice to document my current computer setup
+                            and share how I organize my digital workspace.
+                    published_at: '2020-07-22 20:13:19'
+                    views: 2
+                    cover_image_name: cover-image.png
+                    is_following: 0
+                    responsesCount: 4
+                    clapsCount: 3
+                    isClapped: 0
+                    tags:
+                      - technology
+                      - maths
+                      - science
+                      - thriller
+                      - sci-fi
+                    isAuthor: true
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No story found':
+                  description: These is no story found with given id
+                  value:
+                    error: No story found
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Required path params not present':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - storyId
+
+  /story:
+    put:
+      security:
+        - authentication: []
+      tags:
+        - Story APIs
+      description: create or update story
+      requestBody:
+        description: story details
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - content
+              properties:
+                title:
+                  description: title of the story
+                  type: string
+                content:
+                  description: content of the story
+                  type: object
+                storyId:
+                  description: unique id of story.\nIf not provided it will create the story.\nIf provide will update the existing story
+              example:
+                storyId: 1
+                title: 9 Ways to Build Virality into your Product
+                content:
+                  - type: paragraph
+                    data:
+                      text: >-
+                        I am a computer science student with a passion for design and all things
+                        aesthetic. I am also a minimalist and love keeping things extremely
+                        simple. I thought it would be nice to document my current computer setup
+                        and share how I organize my digital workspace.
+                  - type: paragraph
+                    data:
+                      text: >-
+                        am a computer science student with a passion for design and all things
+                        aesthetic. I am also a minimalist and love keeping things extremely
+                        simple. I thought it would be nice to document my current computer setup
+                        and share how I organize my digital workspace.
+                  - type: header
+                    data:
+                      text: Workspace
+                      level: 2
+                  - type: paragraph
+                    data:
+                      text: >-
+                        am a computer science student with a passion for design and all things
+                        aesthetic. I am also a minimalist and love keeping things extremely
+                        simple. I thought it would be nice to document my current computer setup
+                        and share how I organize my digital workspace.
+                  - type: delimiter
+                    data: {}
+                  - type: header
+                    data:
+                      text: Workspace
+                      level: 2
+                  - type: paragraph
+                    data:
+                      text: >-
+                        am a computer science student with a passion for design and all things
+                        aesthetic. I am also a minimalist and love keeping things extremely
+                        simple. I thought it would be nice to document my current computer setup
+                        and share how I organize my digital workspace.
+      responses:
+        200:
+          description: create or update story
+          content:
+            application/json:
+              examples:
+                'story created':
+                  description: story created
+                  value:
+                    status: Story created
+                    storyId: 1
+                'story updated':
+                  description: story updated
+                  value:
+                    status: Story updated
+                    storyId: 1
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No draft found':
+                  description: These is no draft found with given id
+                  value:
+                    error: No draft found
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Required fields not present':
+                  description: Required fields not present in the request body
+                  value:
+                    error: Required fields not present in the request body
+                    missingFields:
+                      - title
+                      - content
+                'Required path params not present':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - storyId
+
+  /story/{storyId}/response:
+    post:
+      security:
+        - authentication: []
+      tags:
+        - Story APIs
+      description: add response to a story
+      parameters:
+        - name: storyId
+          in: path
+          type: string
+          required: true
+      requestBody:
+        description: story details
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - response
+              properties:
+                response:
+                  description: response added by user
+                  type: string
+              example:
+                response: Very useful story
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              examples:
+                'response added':
+                  description: response added
+                  value:
+                    status: added
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No draft found':
+                  description: These is no story found with given id
+                  value:
+                    error: No story found
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'Required fields not present':
+                  description: Required fields not present in the request body
+                  value:
+                    error: Required fields not present in the request body
+                    missingFields:
+                      - response
+                'Required path params not present':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - storyId
+
+  /story/{storyId}/clap:
+    put:
+      security:
+        - authentication: []
+      tags:
+        - Story APIs
+      description: clap or unClap on a story
+      parameters:
+        - name: storyId
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                description: clap/unclap response
+                type: object
+                required:
+                  - isClapped
+                  - clapsCount
+                properties:
+                  isClapped:
+                    description: boolean mentioning clapped or unclapped
+                    type: boolean
+                    example: true
+                  clapsCount:
+                    description: latest claps count after clap/unclap
+                    type: integer
+                    example: 10
+              examples:
+                'clapped':
+                  description: clapped
+                  value:
+                    isClapped: true
+                    clapsCount: 10
+                'unclapped':
+                  description: unclapped
+                  value:
+                    isClapped: false
+                    clapsCount: 9
+
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No draft found':
+                  description: These is no story found with given id
+                  value:
+                    error: No story found
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'clap/unClap on own story':
+                  description: clap or unClap on own story
+                  value:
+                    error: You cannot clap or unclap on your own story
+                'Required path params not present':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - storyId
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+  /story/{storyId}/publish:
+    post:
+      security:
+        - authentication: []
+      tags:
+        - Story APIs
+      description: published a drafted story
+      parameters:
+        - name: storyId
+          in: path
+          type: string
+          required: true
+      requestBody:
+        description: details required to publish the story
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - tags
+              properties:
+                tags:
+                  description: tags attached to the story
+                  type: array
+                  example:
+                    - technology
+                    - science
+                coverImage:
+                  description: The image file to upload as cover page
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Published
+          content:
+            application/json:
+              examples:
+                'published':
+                  description: published successfully
+                  value:
+                    status: Published
+        404:
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                'No draft found':
+                  description: These is no story found with given id
+                  value:
+                    error: No story found
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                'missing title and content':
+                  description: Missing title and content
+                  value:
+                    error: Cannot publish a story with empty title and content
+                'tags missing':
+                  description: Required fields missing
+                  value:
+                    error: Required fields not present in the request body
+                    missingFields:
+                      - tags
+                'storyId missing':
+                  description: Required path params not present
+                  value:
+                    error: Required path params not present
+                    missingFields:
+                      - storyId
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                'Unauthorized':
+                  description: You are not authorized to access this endpoint
+                  value:
+                    status: unauthorized
+
+components:
+  schemas:
+    userProfile:
+      title: profile information of a user
+      description: profile information of a user
+      type: object
+      required:
+        - id
+        - username
+        - avatar_url
+        - followers
+        - following
+        - stories
+      properties:
+        id:
+          description: unique id of the user
+          type: string
+          example: 58025056
+        username:
+          description: username of the user
+          type: string
+          example: abhilashkasula
+        avatar_url:
+          description: url for the profile avatar of the user
+          type: string
+          example: https://avatars0.githubusercontent.com/u/58025056?v=4
+        stories:
+          description: stories published by the user
+          $ref: '#/components/schemas/stories'
+        followers:
+          description: all the users following this user
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+        following:
+          description: all the users this user following
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+    user:
+      title: user details
+      description: user details
+      type: object
+      required:
+        - id
+        - username
+        - avatar_url
+      properties:
+        id:
+          description: unique id of the user
+          type: string
+          example: 58025056
+        username:
+          description: unique username of the user
+          type: string
+          example: abhilashkasula
+        avatar_url:
+          description: url for the profile avatar of the user
+          type: string
+          example: https://avatars0.githubusercontent.com/u/58025056?v=4
+    searchResults:
+      title: searchResults
+      description: searchResults
+      type: object
+      required:
+        - userBased
+        - contentBased
+        - tagBased
+      properties:
+        userBased:
+          $ref: '#/components/schemas/stories'
+        contentBased:
+          $ref: '#/components/schemas/stories'
+        tagBased:
+          $ref: '#/components/schemas/stories'
+    stories:
+      title: stories list
+      description: stories list
+      type: array
+      items:
+        $ref: '#/components/schemas/story'
+    story:
+      title: story
+      description: story
+      type: object
+      required:
+        - id
+        - title
+        - content
+        - published_at
+        - author
+        - author_id
+        - tags
+      properties:
+        id:
+          type: string
+          description: unique id of the story
+          example: 1
+        title:
+          type: string
+          description: title of the story
+          example: 9 Ways to Build Virality into your Product
+        content:
+          description: array of content details
+          $ref: '#/components/schemas/content'
+          example:
+            - type: paragraph
+              data:
+                text: >-
+                  I am a computer science student with a passion for design and all things
+                  aesthetic. I am also a minimalist and love keeping things extremely
+                  simple. I thought it would be nice to document my current computer setup
+                  and share how I organize my digital workspace.
+            - type: paragraph
+              data:
+                text: >-
+                  am a computer science student with a passion for design and all things
+                  aesthetic. I am also a minimalist and love keeping things extremely
+                  simple. I thought it would be nice to document my current computer setup
+                  and share how I organize my digital workspace.
+            - type: header
+              data:
+                text: Workspace
+                level: 2
+            - type: paragraph
+              data:
+                text: >-
+                  am a computer science student with a passion for design and all things
+                  aesthetic. I am also a minimalist and love keeping things extremely
+                  simple. I thought it would be nice to document my current computer setup
+                  and share how I organize my digital workspace.
+            - type: delimiter
+              data: {}
+            - type: header
+              data:
+                text: Workspace
+                level: 2
+            - type: paragraph
+              data:
+                text: >-
+                  am a computer science student with a passion for design and all things
+                  aesthetic. I am also a minimalist and love keeping things extremely
+                  simple. I thought it would be nice to document my current computer setup
+                  and share how I organize my digital workspace.
+          published_at:
+            type: string
+            description: Timestamp of when this
+            example: '2020-07-22 20:13:19'
+          author:
+            type: string
+            description: author of the story
+            example: abhilashkasula
+          author_id:
+            type: string
+            description: unique identifier for the author
+            example: 58025056
+          tags:
+            type: array
+            description: tags attached to the story
+            example:
+              - technology
+              - maths
+              - science
+              - thriller
+              - sci-fi
+    publishedStory:
+      title: published story
+      description: published story
+      type: object
+      required:
+        - id
+        - title
+        - content
+        - published_at
+        - author
+        - author_id
+        - author_url
+        - cover_image_name
+        - is_following
+        - responsesCount
+        - views
+        - clapsCount
+        - isClapped
+        - isAuthor
+        - tags
+      properties:
+        id:
+          type: string
+          description: unique id of the story
+          example: 1
+        title:
+          type: string
+          description: title of the story
+          example: 9 Ways to Build Virality into your Product
+        content:
+          description: array of content details
+          $ref: '#/components/schemas/content'
+          example:
+            - type: paragraph
+              data:
+                text: >-
+                  I am a computer science student with a passion for design and all things
+                  aesthetic. I am also a minimalist and love keeping things extremely
+                  simple. I thought it would be nice to document my current computer setup
+                  and share how I organize my digital workspace.
+            - type: paragraph
+              data:
+                text: >-
+                  am a computer science student with a passion for design and all things
+                  aesthetic. I am also a minimalist and love keeping things extremely
+                  simple. I thought it would be nice to document my current computer setup
+                  and share how I organize my digital workspace.
+            - type: header
+              data:
+                text: Workspace
+                level: 2
+            - type: paragraph
+              data:
+                text: >-
+                  am a computer science student with a passion for design and all things
+                  aesthetic. I am also a minimalist and love keeping things extremely
+                  simple. I thought it would be nice to document my current computer setup
+                  and share how I organize my digital workspace.
+            - type: delimiter
+              data: {}
+            - type: header
+              data:
+                text: Workspace
+                level: 2
+            - type: paragraph
+              data:
+                text: >-
+                  am a computer science student with a passion for design and all things
+                  aesthetic. I am also a minimalist and love keeping things extremely
+                  simple. I thought it would be nice to document my current computer setup
+                  and share how I organize my digital workspace.
+        published_at:
+          type: string
+          description: Timestamp of when this
+          example: '2020-07-22 20:13:19'
+        author:
+          type: string
+          description: author of the story
+          example: abhilashkasula
+        author_id:
+          type: string
+          description: unique identifier for the author
+          example: 58025056
+        author_url:
+          description: url for the profile avatar of the user
+          type: string
+          example: https://avatars0.githubusercontent.com/u/58025056?v=4
+        cover_image_name:
+          description: name of the cover image
+          type: string
+          example: cover-image.png
+        is_following:
+          description: Is logged user following the author?
+          type: boolean
+          example: true
+        responsesCount:
+          description: No. of responses are there for this story
+          type: integer
+          example: 4
+        views:
+          description: No. of views for this story
+          type: integer
+          example: 2
+        clapsCount:
+          description: No. of claps for this story
+          type: integer
+          example: 3
+        isClapped:
+          description: Is logged user clapped on this story?
+          type: boolean
+          example: false
+        isAuthor:
+          description: Is logged user the author of the story?
+          type: boolean
+          example: false
+        tags:
+          type: array
+          description: tags attached to the story
+          example:
+            - technology
+            - maths
+            - science
+            - thriller
+            - sci-fi
+    response:
+      title: response
+      description: response
+      type: object
+      properties:
+        id:
+          description: unique id of the response
+          type: integer
+          example: 58025419
+        response:
+          description: response
+          type: string
+          example: Nice story
+        responded_at:
+          description: timestamp of when user responded
+          type: string
+          example: '2020-07-22 20:13:19'
+        username:
+          description: unique name of the suer
+          type: string
+          example: myultimatevision
+        avatar_url:
+          description: url for the profile avatar of the user
+          type: string
+          example: 'https://avatars0.githubusercontent.com/u/58025419?v=4'
+    content:
+      description: array of content details
+      type: array
+      items:
+        $ref: '#/components/schemas/contentItem'
+
+    contentItem:
+      title: content Item
+      description: content Item
+      type: object
+      properties:
+        type:
+          description: type of data
+          type: string
+          enum:
+            - paragraph
+            - header
+            - delimiter
+          example: paragraph
+        data:
+          description: data
+          type: object
+          properties:
+            text:
+              description: content text
+              type: string
+              example: hello world
+            level:
+              description: level
+              type: integer
+              example: 2
