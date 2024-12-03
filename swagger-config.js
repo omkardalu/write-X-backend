@@ -12,7 +12,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'http://localhost:8000',
+      url: 'https://write-x-backend.onrender.com',
       description: 'Medium backend server',
     },
   ],
